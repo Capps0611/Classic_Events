@@ -14,10 +14,11 @@ $RECYCLE.BIN/
 *.msi
 *.msm
 *.msp
-
+settings.json
+/node_modules/
 # Windows shortcuts
 *.lnk
-
+/Events\activeEvents.json
 # =========================
 # Operating System Files
 # =========================
