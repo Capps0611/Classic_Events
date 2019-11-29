@@ -18,7 +18,7 @@ settings.json
 /node_modules/
 # Windows shortcuts
 *.lnk
-/Events\activeEvents.json
+Events\activeEvents.json
 # =========================
 # Operating System Files
 # =========================
