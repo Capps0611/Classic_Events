@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const client = new Discord.Client()
-
+let Event = require('./Event.js')
 const settings = require('./settings.json');
 const fs = require('fs');
 
@@ -87,13 +87,35 @@ function createEvent(arguments,receivedMessage)
      lastMsg.react("🟩")
      lastMsg.react("🟥")
    }, 2000,client);
-   var text = '{"event_'+events.totalEvents+'":['+
+   /*var text = '{"event_'+events.totalEvents+'":['+
    '{"date":"'+arguments[0]+'","time":"'+arguments[1]+'","description":"'+arguments[2]+'"}]}';
    events.event_$XX=JSON.parse(text)
-   fs.writeFile('./Events/activeEvents.json',JSON.stringify(events,null, 2))
+   fs.writeFile('./Events/activeEvents.json',JSON.stringify(events,null, 2))*/
+
+   addEvent(new Event(arguments[0],arguments[1],arguments[2]),success => {console.log("event logged")})
 
 }
 
+function addEvent(newEvent)
+{
+  fs.readFile('./Events/activeEvents.json', function (err, data) {
+        let json = JSON.parse(data);
+
+        if (json.activeEvents.length === 0) {
+            newEvent.eventID = 1;
+        } else {
+            newEvent.eventID = json.activeEvents[json.activeEvents.length - 1].eventID + 1;
+        }
+
+        json.activeEvents.push(newQuote);
+
+        fs.writeFile('quotes.json', JSON.stringify(json), 'utf-8', function (err) {
+            if (err) callback(false);
+            callback(newEvent.eventID);
+        });
+    });
+
+}
 // Get your bot's secret token from:
 // https://discordapp.com/developers/applications/
 // Click on your application -> Bot -> Token -> "Click to Reveal Token"
