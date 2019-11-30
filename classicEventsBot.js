@@ -9,7 +9,7 @@ fs.access('./Events/activeEvents.json', fs.F_OK, (err) => {
     if (err) {
         console.log("file doesn't exist, creating....")
         var text = '{'+
-          '"totalEvents":0'
+          '"totalEvents":[]'
         +'}';
         obj = JSON.parse(text);
         let json = JSON.stringify(obj,null, 2);
@@ -75,24 +75,18 @@ function helpCommand(arguments, receivedMessage) {
 function createEvent(arguments,receivedMessage)
 {
   var newEvent = "";
-  events.totalEvents+= 1;
   for (var i = 0; i < arguments.length; i++)
   {
     newEvent += arguments[i]+" ";
   }
-  receivedMessage.channel.send("Event ID: "+events.totalEvents+"\n"+newEvent+"\nReact with :green_square: for going and :red_square: for not going")
+  receivedMessage.channel.send("Event ID: "+events.totalEvents.length+"\n"+newEvent+"\nReact with :green_square: for going and :red_square: for not going")
   //Sets the intial reactions for going/not going
   setTimeout(function() {
      let lastMsg = client.user.lastMessage;
      lastMsg.react("🟩")
      lastMsg.react("🟥")
    }, 2000,client);
-   /*var text = '{"event_'+events.totalEvents+'":['+
-   '{"date":"'+arguments[0]+'","time":"'+arguments[1]+'","description":"'+arguments[2]+'"}]}';
-   events.event_$XX=JSON.parse(text)
-   fs.writeFile('./Events/activeEvents.json',JSON.stringify(events,null, 2))*/
-
-   addEvent(new Event(arguments[0],arguments[1],arguments[2]),success => {console.log("event logged")})
+   addEvent(new Event(arguments[0],arguments[1],arguments[2]))
 
 }
 
@@ -101,17 +95,17 @@ function addEvent(newEvent)
   fs.readFile('./Events/activeEvents.json', function (err, data) {
         let json = JSON.parse(data);
 
-        if (json.activeEvents.length === 0) {
+        if (json.totalEvents.length === 0) {
             newEvent.eventID = 1;
         } else {
-            newEvent.eventID = json.activeEvents[json.activeEvents.length - 1].eventID + 1;
+            newEvent.eventID = json.totalEvents[json.totalEvents.length - 1].eventID + 1;
         }
 
-        json.activeEvents.push(newQuote);
+        json.totalEvents.push(newEvent);
 
-        fs.writeFile('quotes.json', JSON.stringify(json), 'utf-8', function (err) {
-            if (err) callback(false);
-            callback(newEvent.eventID);
+        fs.writeFile('./Events/activeEvents.json', JSON.stringify(json,null,2), 'utf-8', function (err) {
+            //if (err) callback(false);
+            //callback(newEvent.eventID);
         });
     });
 
