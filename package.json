@@ -9,7 +9,7 @@
   "author": "Capps",
   "license": "ISC",
   "dependencies": {
-    "async": "^3.1.0",
+    "async": "^3.2.2",
     "discord.js": "^11.5.1",
     "fs": "0.0.1-security",
     "jquery": "^3.4.1"
